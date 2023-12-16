@@ -3,6 +3,10 @@ name: CI
 on:
     push:
 
+permissions:
+  id-token: write
+  pages: write
+
 jobs:
     build-dokka:
         if: startsWith(github.ref, 'refs/tags/')
