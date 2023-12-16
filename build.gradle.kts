@@ -1,9 +1,12 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.serialization") version "1.9.21"
     id("com.vanniktech.maven.publish") version "0.25.3"
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 kotlin {
@@ -34,6 +37,13 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets.configureEach {
+        externalDocumentationLink("https://api.ktor.io/")
+        externalDocumentationLink("https://kotlinlang.org/api/kotlinx.serialization/")
+    }
 }
 
 mavenPublishing {
