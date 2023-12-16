@@ -58,9 +58,8 @@ mavenPublishing {
         url = "https://github.com/rtransat/kotaseries/"
         licenses {
             license {
-                name = "The Apache License, Version 2.0"
-                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                name = "MIT Licence"
+                url = "https://opensource.org/license/mit/"
             }
         }
         developers {
