@@ -18,7 +18,7 @@ jobs:
           - name: Build Dokka
             uses: gradle/gradle-build-action@v2
             with:
-              arguments: :dokkaHtmlMultiModule
+              arguments: :dokkaHtml
           - name: Upload documentation
             uses: actions/upload-artifact@v3
             with:
@@ -72,5 +72,3 @@ jobs:
             - name: Deploy to Maven Central
               if: startsWith(github.ref, 'refs/tags/')
               run: ./gradlew publish
-
-              

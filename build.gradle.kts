@@ -48,7 +48,7 @@ tasks.withType<DokkaTask>().configureEach {
 
 mavenPublishing {
     coordinates("io.github.rtransat", "kotaseries", "0.0.1")
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral(SonatypeHost.S01, true)
     signAllPublications()
 
     pom {
