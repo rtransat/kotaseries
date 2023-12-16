@@ -27,7 +27,7 @@ jobs:
             uses: actions/upload-artifact@v3
             with:
               name: dokka
-              path: docs/api
+              path: build/dokka/html
               retention-days: 7
     deploy-docs:
         environment:
