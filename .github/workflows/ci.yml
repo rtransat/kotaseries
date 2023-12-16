@@ -1,0 +1,71 @@
+name: CI
+
+on:
+    push:
+
+jobs:
+    build-dokka:
+        if: startsWith(github.ref, 'refs/tags/')
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+          - name: Setup JDK
+            uses: actions/setup-java@v3
+            with:
+              distribution: "temurin"
+              java-version: "11"
+          - name: Build Dokka
+            uses: gradle/gradle-build-action@v2
+            with:
+              arguments: :dokkaHtmlMultiModule
+          - name: Upload documentation
+            uses: actions/upload-artifact@v3
+            with:
+              name: dokka
+              path: docs/api
+              retention-days: 7
+    deploy-docs:
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        # Requires the build-job results
+        needs: [build-dokka]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Download webhelp
+            uses: actions/download-artifact@v3
+            with:
+              name: help
+          - name: Download dokka
+            uses: actions/download-artifact@v3
+            with:
+              name: dokka
+              path: dir
+          - name: Setup Pages
+            uses: actions/configure-pages@v2
+          - name: Upload artifact
+            uses: actions/upload-pages-artifact@v1
+            with:
+              path: dir
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v1
+    deploy:
+        name: Build and Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                distribution: 'temurin'
+                java-version: '17'
+            - uses: gradle/wrapper-validation-action@v1
+            - uses: gradle/gradle-build-action
+              with:
+                arguments: check
+            - name: Deploy to Maven Central
+              if: startsWith(github.ref, 'refs/tags/')
+              run: ./gradlew publish
+
+              
